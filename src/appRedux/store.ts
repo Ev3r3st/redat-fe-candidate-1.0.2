@@ -1,8 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
+import { usersListReducer } from "../features/users/usersListSlice";
+import { userDetailReducer } from "../features/users/userDetailSlice";
 
 const reducer = combineReducers({
-	// slice.reducer
+	usersList: usersListReducer,
+	userDetail: userDetailReducer,
 });
 
 export const store = configureStore({
