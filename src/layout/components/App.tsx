@@ -1,6 +1,6 @@
 import React from "react";
-import { TaskAssignment } from "./TaskAssignment";
+import { UsersPage } from "../../features/users/components/UsersPage";
 
 export const App = () => {
-	return <TaskAssignment />;
+	return <UsersPage />;
 };
