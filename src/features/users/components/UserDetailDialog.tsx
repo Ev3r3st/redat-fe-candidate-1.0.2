@@ -10,6 +10,7 @@ type Props = {
 
 export const UserDetailDialog: React.FC<Props> = ({ open, user, onClose }) => {
   const [form, setForm] = React.useState<User | null>(user);
+  const [errors, setErrors] = React.useState<{ email?: string; website?: string }>({});
 
   React.useEffect(() => {
     setForm(user);
@@ -22,6 +23,15 @@ export const UserDetailDialog: React.FC<Props> = ({ open, user, onClose }) => {
 
   const handleSave = () => {
     if (!form) return;
+    const nextErrors: { email?: string; website?: string } = {};
+    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      nextErrors.email = 'Invalid email format';
+    }
+    if (form.website && !/^https?:\/\//i.test(form.website)) {
+      nextErrors.website = 'Start with http(s)://';
+    }
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length) return;
     const payload = {
       id: form.id,
       name: form.name,
@@ -43,9 +53,9 @@ export const UserDetailDialog: React.FC<Props> = ({ open, user, onClose }) => {
         <Stack spacing={2} mt={1}>
           <TextField label="Name" value={form?.name ?? ''} onChange={handleChange('name')} />
           <TextField label="Username" value={form?.username ?? ''} onChange={handleChange('username')} />
-          <TextField label="Email" value={form?.email ?? ''} onChange={handleChange('email')} />
+          <TextField label="Email" value={form?.email ?? ''} onChange={handleChange('email')} error={Boolean(errors.email)} helperText={errors.email} />
           <TextField label="Phone" value={form?.phone ?? ''} onChange={handleChange('phone')} />
-          <TextField label="Website" value={form?.website ?? ''} onChange={handleChange('website')} />
+          <TextField label="Website" value={form?.website ?? ''} onChange={handleChange('website')} error={Boolean(errors.website)} helperText={errors.website} />
         </Stack>
       </DialogContent>
       <DialogActions>
@@ -55,4 +65,3 @@ export const UserDetailDialog: React.FC<Props> = ({ open, user, onClose }) => {
     </Dialog>
   );
 };
-
