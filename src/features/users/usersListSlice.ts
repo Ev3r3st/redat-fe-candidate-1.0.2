@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RequestStatus, User } from './types';
+import { fetchUsersApi } from './api';
 
 export type UsersListState = {
   items: User[];
@@ -15,12 +16,7 @@ const initialState: UsersListState = {
 
 export const fetchUsers = createAsyncThunk<User[]>(
   'usersList/fetchUsers',
-  async () => {
-    const res = await fetch('https://jsonplaceholder.typicode.com/users');
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = (await res.json()) as User[];
-    return data;
-  }
+  async () => fetchUsersApi()
 );
 
 const usersListSlice = createSlice({
@@ -55,4 +51,3 @@ const usersListSlice = createSlice({
 
 export const { setUsers, reset } = usersListSlice.actions;
 export const usersListReducer = usersListSlice.reducer;
-
