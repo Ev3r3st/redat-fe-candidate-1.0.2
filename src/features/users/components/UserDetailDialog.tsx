@@ -27,9 +27,7 @@ export const UserDetailDialog: React.FC<Props> = ({ open, user, onClose }) => {
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       nextErrors.email = 'Invalid email format';
     }
-    if (form.website && !/^https?:\/\//i.test(form.website)) {
-      nextErrors.website = 'Start with http(s)://';
-    }
+    // Removed website scheme validation per request
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) return;
     const payload = {
