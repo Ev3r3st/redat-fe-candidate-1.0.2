@@ -1,17 +1,19 @@
 import React from 'react';
 import { Box, Alert, CircularProgress, Container, Paper, Typography } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowParams } from '@mui/x-data-grid';
 import { useAppDispatch, useAppSelector } from '../../../appRedux/hooks';
 import { fetchUsers } from '../usersListSlice';
 import { selectUser, clearUser } from '../userDetailSlice';
-import type { RootState } from '../../../appRedux/store';
 import type { User } from '../types';
 import { UserDetailDialog } from './UserDetailDialog';
+import { selectSelectedUser, selectUsers, selectUsersError, selectUsersStatus } from '../selectors';
 
 export const UsersPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { items, status, error } = useAppSelector((s: RootState) => s.usersList);
-  const { data: selected } = useAppSelector((s: RootState) => s.userDetail);
+  const items = useAppSelector(selectUsers);
+  const status = useAppSelector(selectUsersStatus);
+  const error = useAppSelector(selectUsersError);
+  const selected = useAppSelector(selectSelectedUser);
 
   React.useEffect(() => {
     if (status === 'idle') {
@@ -29,6 +31,11 @@ export const UsersPage: React.FC = () => {
     []
   );
 
+  const handleRowClick = React.useCallback((params: GridRowParams<User>) => {
+    const row = params.row as User;
+    dispatch(selectUser(row));
+  }, [dispatch]);
+
   return (
     <Container maxWidth="lg" sx={{ py: 3 }}>
       <Typography variant="h4" gutterBottom>Users</Typography>
@@ -45,12 +52,7 @@ export const UsersPage: React.FC = () => {
           rows={items}
           columns={columns}
           loading={status === 'loading'}
-          onRowDoubleClick={(params) => {
-            dispatch(selectUser(params.row as User));
-          }}
-          onRowClick={(params) => {
-            dispatch(selectUser(params.row as User));
-          }}
+          onRowClick={handleRowClick}
           getRowId={(row) => row.id}
           disableRowSelectionOnClick
           initialState={{ pagination: { paginationModel: { page: 0, pageSize: 5 } } }}
@@ -66,4 +68,3 @@ export const UsersPage: React.FC = () => {
     </Container>
   );
 };
-

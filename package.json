@@ -10,7 +10,8 @@
     "start": "webpack serve --config webpack/config.development.js",
     "build": "npm run lint && npm run clean && webpack --config webpack/config.production.js --progress --profile",
     "lint": "eslint -c ./eslint.config.mjs",
-    "lint.fix": "eslint -c ./eslint.config.mjs --fix"
+    "lint.fix": "eslint -c ./eslint.config.mjs --fix",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
