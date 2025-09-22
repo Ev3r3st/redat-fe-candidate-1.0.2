@@ -82,7 +82,7 @@ export const UserDetailDialog: React.FC<Props> = ({ open, user, onClose }) => {
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm" TransitionComponent={Transition}>
       <DialogTitle sx={{ pr: 6 }}>
-        <Stack direction="row" alignItems="center" spacing={2}>
+        <Stack direction="column" alignItems="center" spacing={2}>
           <Avatar sx={{ bgcolor: 'primary.main' }}>
             {initials || <PersonIcon />}
           </Avatar>
@@ -152,7 +152,7 @@ export const UserDetailDialog: React.FC<Props> = ({ open, user, onClose }) => {
           <Tooltip title="Esc">
             <Button onClick={onClose} color="inherit">Cancel</Button>
           </Tooltip>
-          <Tooltip title="Ctrl+Enter">
+          <Tooltip title="Enter">
             <span>
               <Button type="submit" variant="contained" disabled={!form || !isDirty || Boolean(errors.email)}>
                 Save
